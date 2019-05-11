@@ -1,0 +1,75 @@
+<?php
+//$problemlist = [];
+$problemlist = array();
+$uparrow = "&uarr;";
+$downarrow = "&darr;";
+$rightarrow = "&rarr;";
+
+function CreateProblem ($name, $imgsrc, $problemtext) {
+	$problem = array();
+	$problem['name'] = $name;
+	$problem['imgsrc'] = $imgsrc;
+	$problem['problemtext'] = $problemtext;
+
+	return $problem;
+}
+
+$ProblemName = "1.  Chemistry Review";
+$ImageSrc = "./images/Chemicals_in_flasks.png";
+$ProblemText = '<p>Let’s start with a very quick and very brief chemistry review.  If you find yourself having trouble here, please seek additional help on these topics.</p>
+<p>Amounts of solutes are usually measured in moles.  The number of moles is a function the amount of the substance (grams) and of its molecular weight (grams/mole).</p>
+<p>Sodium has a molecular weight of 23 gm/mol.  Chloride has a molecular weight of 35.5 gm/mol.  How much sodium chloride (NaCl) do you need to have 16 moles?</p>
+A.  368 gm<br />
+B.  0.274 gm<br />
+C.  936 gm<br />
+<p>Click on the correct answer in the bar at the upper right hand cormer of the page</p>';
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+array_push($problemlist,$NewProblem);
+	
+$ProblemName = '2.  Osmolarity';
+$ImageSrc = "./images/osmolarity1.png";
+$ProblemText = '<p><string>Osmoalrity</strong is a measure of the osmoles of solute per liter solution (<em>somolarity</em>) is per kg solution).  An osmole is one mole of particles.  A solution with higher osmolarity relative to a reference solution is said to be <em>hyper-osmoltic</em>.  A solution with higher osmolarity relative to a reference solution is said to be <em>hyperosmotic</em>.  A solution with lower osmolarity relative to a reference solution is said to be <em>hypoosmotic</em>.  A solution with the same osmolarity as a reference solution is said to be <em>isoosmotic</em>.</p>
+<p>Which of these solutions is hypoosmotic relative to the other listed?</p>
+A.  160 mM NaCl<br />
+B.  240 mM albumin<br />
+<p>Click on the correct answer in the bar at the upper right hand cormer of the page</p>';
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+array_push($problemlist,$NewProblem);
+
+$ProblemName = '3.  Tonicity';
+$ImageSrc = "./images/osmolarity1.png";
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+$ProblemText = '<p>OK, now it gets slightly more complicated.</p>
+<p>You examine a single cell.  The cell has 40 mM protein G in it (protein generally does not cross the cell membrane).  You also have a huge beaker of water which has 20 mM of protein G in it.  You drop the cell into the water.  The cell will:</p>
+A.  shrink<br />
+B.  swell<br />
+C.  not change in volume<br />
+<p>Click on the correct answer in the bar at the upper right hand cormer of the page</p>';
+array_push($problemlist,$NewProblem);
+
+$ProblemName = '4.  Membrane Permeant Substances';
+$ImageSrc = "./images/osmolarity1.png";
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+$ProblemText = '<p>OK, now it gets slightly more complicated.</p>
+<p>You examine a single cell.  The cell has 40 mM protein G in it (protein generally does not cross the cell membrane).  You also have a huge beaker of water which has 20 mM of protein G in it.  You drop the cell into the water.  The cell will:</p>
+A.  shrink<br />
+B.  swell<br />
+C.  not change in volume<br />
+<p>Click on the correct answer in the bar at the upper right hand cormer of the page</p>';
+array_push($problemlist,$NewProblem);
+
+$ProblemName = '5.  Case of Dehydration';
+$ImageSrc = "./images/osmolarity1.png";
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+array_push($problemlist,$NewProblem);
+
+$ProblemName = '6.  Osmolarity and the Kidney';
+$ImageSrc = "./images/osmolarity1.png";
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+array_push($problemlist,$NewProblem);
+
+$ProblemName = '7.  Osmoarity in the Campillaries';
+$ImageSrc = "./images/osmolarity1.png";
+$NewProblem = CreateProblem($ProblemName, $ImgSrc);
+array_push($problemlist,$NewProblem);
+?>
