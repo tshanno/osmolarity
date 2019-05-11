@@ -1,16 +1,14 @@
 /*
-  Created on Mon Oct 24 2018
+  Created on MAy, 2019ß
   Javascript File for CircSim Program
   Based on Java CircSim program developed by T. Shannon & J. Michael (Rush University)
 
   ##Revision History
-  ## 10/24/2018: Initial Scripting
-  @CodingAuthor: Brenden Hoff (Aeterna Holdings LLC; brendenhoff@aeternaholdings.com)
+  ## 2019-05-11 Initial checkin and refactoring
 */
 
 $(document).ready(function(){
     var subproblemid;
-    var pagecount;
     var shownewsectionalert = true;
     var shownextproblemalert = true;
 
@@ -23,7 +21,6 @@ $(document).ready(function(){
 
     function LoadProblem(problemid) {
 	$.post('./includes/functions.php?fn=LoadProblem',{ProblemID: problemid, SubproblemID: subproblemid}).done(function(data){
-	    console.log('After loadproblem = ' + subproblemid);
 	    var results = JSON.parse(data);
 	    var Attempts = 0;
 	    attempts = Attempts.toString(10);
@@ -56,10 +53,10 @@ $(document).ready(function(){
 	$.post('./includes/functions.php?fn=CheckAnswers',{ProblemID: problemid, SubproblemID: subproblemid, ProblemResponse: problemresponse, Attempts: attempts}).done(function(data){
 	    $("#problemid").val(problemid);
 	    var results = JSON.parse(data);
-	    console.log(results);
 	    attempts = attempts + 1;
 	    var Attempts = attempts.toString(10);
 	    var Feedback = $("#feedback").html();
+	    var SectionCount = parseInt(results['sectioncount'],10);
 	    $("#checkanswers").attr("submitcount", Attempts);
 	    
 	    if (results['evaluation'] == 'incorrect'){
@@ -69,57 +66,65 @@ $(document).ready(function(){
 		} else {
 		    Feedback = "<p><b>Sorry, that's incorrect.</b><p>" + results['problemexplanation'];
 		    setImageVisible('problemimage',results['problemexplanationimgsrc'],'visible');
-		    if (pagecount < results['count']) {
+		    if (subproblemid < results['count'] - 1) {
 			if (shownextproblemalert) {
-			    alert("Sorry, that's incorrect.  Please read the explanation and be sure to click \"Next\" at the upper right hand corner of the page to load the next problem in this section.");
-			    shownextproblemalert = false;
+			    ShowNextProblemAlert("Sorry, that's incorrect.")
 			}
-			subproblemid = subproblemid + 1;
-			$('#nextproblem').attr('disabled',false);
-			$('#checkanswers').attr('disabled',true);
-			Feedback = Feedback + '<p><b>Please click "Next" at the top of the page to move to the next problem in this section.</b></p>';
+			Feedback = SetInterfaceForNextProblem(Feedback);
 		    } else {
 			if (shownewsectionalert && (problemid != (parseInt(results['sectioncount'],10) - 1))) {
-			    alert("Sorry, that's incorrect.  Please read the explanation and choose another section on the left.");
-			    shownewsectionalert = false;
+			    ShowNewSectionAlert("Sorry, that's incorrect.");
 			}
-			$('#checkanswers').attr('disabled',true);
-			if (problemid != (parseInt(results['sectioncount'],10) - 1)) {
-			    Feedback = Feedback + '<p><b>Please choose another section on the left.</b></p>';
-			} else {
-			    Feedback = Feedback + '<p><b>Nice work.  Bye.</b></p>';
-			}
+			Feedback = SetInterfaceForNewSection(Feedback, problemid, SectionCount);
 		    }
 
 		}
 	    } else {
 		Feedback = "<p><b>Correct!</b></p>" + results['problemexplanation'];
 		setImageVisible('problemimage',results['problemexplanationimgsrc'],'visible');
-		if (pagecount < results['count']) {
+		if (subproblemid < results['count'] - 1) {
 		    if (shownextproblemalert) {
-			alert("Correct.  Please be sure to click \"Next\" at the upper right hand corner of the page to load the next problem in this section.");
-			shownextproblemalert = false;
+			ShowNextProblemAlert("Correct.")
 		    }
-		    subproblemid = subproblemid + 1;
-		    $('#nextproblem').attr('disabled',false);
-		    $('#checkanswers').attr('disabled',true);
-		    Feedback = Feedback + '<p><b>Please click "Next" at the top of the page to move to the next problem in this section.</b></p>';
+		    Feedback = SetInterfaceForNextProblem(Feedback);
 		} else {
 		    if (shownewsectionalert && (problemid != (parseInt(results['sectioncount'],10) - 1))) {
-			alert("Correct.  Please read the explanation and choose another section on the left.");
-			shownewsectionalert = false;
+			ShowNewSectionAlert("Correct.");
 		    }
-		    $('#checkanswers').attr('disabled',true);
-		    if (problemid != (parseInt(results['sectioncount'],10) - 1)) {
-			Feedback = Feedback + '<p><b>Please choose another section on the left.</b></p>';
-		    } else {
-			Feedback = Feedback + '<p><b>Nice work.  Bye.</b></p>';
-		    }
+		    Feedback = SetInterfaceForNewSection(Feedback, problemid, SectionCount);		    
 		}
 	    }
 	    $("#feedback").html(Feedback);
 	});
     }
+
+        function ShowNextProblemAlert(introductoryremark) {
+	alert(introductoryremark + "  Please read the explanation and be sure to click \"Next\" at the upper right hand corner of the page to load the next problem in this section.");
+	shownextproblemalert = false;
+    }
+
+    function SetInterfaceForNextProblem(feedback) {
+	$('#nextproblem').attr('disabled',false);
+	$('#checkanswers').attr('disabled',true);
+	Feedback = feedback + '<p><b>Please click "Next" at the top of the page to move to the next problem in this section.</b></p>';
+	return Feedback;
+    }
+
+    function ShowNewSectionAlert(introductoryremark) {
+	alert(introductoryremark + "  Please read the explanation and choose another section on the left.");
+	shownewsectionalert = false;
+    }
+
+    function SetInterfaceForNewSection(feedback, problemid, sectioncount) {
+	$('#checkanswers').attr('disabled',true);
+	if (problemid != sectioncount - 1) {
+	    Feedback = feedback + '<p><b>Please choose another section on the left.</b></p>';
+	} else {
+	    Feedback = feedback + '<p><b>Nice work.  Bye.</b></p>';
+	}
+	return Feedback;
+    }
+
     
 
     //This loads the list of problems	
@@ -131,37 +136,16 @@ $(document).ready(function(){
 	$("button.problemselection").attr('activeproblem',0);
 	$(this).attr('activeproblem',1);
 	subproblemid = 0;
-	pagecount = 1;
 	LoadProblem(problemid);
     });
 
     $(document).on('click',"#nextproblem",function(){
 	var ProblemID = $("#problemid").val();
 	problemid = parseInt(ProblemID,10);
-	pagecount = pagecount + 1;
+	subproblemid = subproblemid + 1;
 	LoadProblem(problemid);
     });
     
-    //This adjusts the answer value by clicking the button.
-    $(document).on('click',"button.answer, button.wronganswer",function() {
-	switch($(this).val()) {
-	case "n":
-	    $(this).html("&uarr;");
-	    $(this).val("u");
-	    break;
-	case "u":
-	    $(this).html("&darr;");
-	    $(this).val("d");
-	    break;
-	case "d":
-	    $(this).html("0");
-	    $(this).val("n");
-	    break;
-	default:
-	    alert("unknown error");
-	    
-	}
-    });
     
     //This submits the form data to the function php page for analyzing answers
     $(document).on('click',"#checkanswers",function(){
@@ -195,19 +179,4 @@ $(document).ready(function(){
 	$('#' + divid).hide();
     });
     
-    //This starts the tutorial mode for the first problem.
-    $(document).on("click","#tutorialmode", function() {
-	var currentproblem = $("#problemid").val();
-	if (currentproblem!='') {
-	    var confirmtutorial = confirm("This will start a guided walkthrough of problem #1. You will lose your progress on your current problem. Continue?");
-	}
-	else {
-	    var confirmtutorial = confirm("This will start a guided walkthrough of problem #1. Continue?");
-	}
-	if (confirmtutorial) {
-	    $("button.problemselection").attr('activeproblem',0);
-	    $("button.problemselection[problemid='0']").attr('activeproblem',1);
-	    StartTutorial();
-	}
-    });
 });

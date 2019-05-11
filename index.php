@@ -39,29 +39,7 @@ header("Expires: 0"); // Proxies.
 			<div id='problemimagediv'>
 			<img id='problemimage' />
 			</div>
-			<div id='circsimtable'></div>
 			<div id='feedback'></div>
-			<div class='hover_popup' id='solution'>
-				<span class='popup_helper'></span>
-				<div>
-					<div class='popupCloseButton' divid='solution'>X</div>
-					<div id='solutioncontent'></div>
-				</div>
-			</div>
-			<div class='hover_popup' id='hint'>
-				<span class='popup_helper'></span>
-				<div>
-					<div class='popupCloseButton' divid='hint'>X</div>
-					<div id='problemhint'></div>
-				</div>
-			</div>
-			<div class='hover_popup' id='conceptmap'>
-				<span class='popup_helper'></span>
-				<div>
-					<div class='popupCloseButton' divid='conceptmap'>X</div>
-					<img src='./images/conceptmap.png' />
-				</div>
-			</div>
 			<div class='hover_popup' id='directions'>
 				<span class='popup_helper'></span>
 				<div>

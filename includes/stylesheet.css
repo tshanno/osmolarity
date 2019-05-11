@@ -64,10 +64,6 @@ button.problemselection {
 	text-align: center;
 }
 
-#circsimtable {
-	overflow-y: auto;
-}
-
 img {
 	display: block;
 	margin-left: auto;
@@ -114,18 +110,6 @@ button {
 	font-size: 18px;
 }
 
-button.answer {
-	background-color: white;
-	background-image: linear-gradient(white,#a0a0a0);
-	width: 75px;
-}
-
-button.wronganswer {
-	background-color: red;
-	background-image: linear-gradient(#f51616,#b50000);
-	width: 75px;
-}
-
 button.problemselection[activeproblem='1'] {
 	color: yellow;
 }
@@ -155,11 +139,6 @@ div.hr {
 span.disabled {
 	font-size: 24px;
 	color: #a0a0a0
-}
-input[tutorialactive='1'] {
-	border-style: inset;
-	background-color: crimson;
-	color: white;
 }
 
  /* Popup box BEGIN */
