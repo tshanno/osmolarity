@@ -33,7 +33,9 @@ header("Expires: 0"); // Proxies.
 		<div id="menu"></div>
 		<div id="main">
 			<input type='hidden' id='problemid' value='' />
-			<input type='hidden' id='tutorialprogress' value='' />
+			<input type='hidden' id='subproblemid' value='' />
+			<input type='hidden' id='shownewsectionalert' value=true />
+			<input type='hidden' id='shownextproblemalert' value=true />
 			<div id='problemname'></div>
 			<div id='problemstem'></div>
 			<div id='problemimagediv'>

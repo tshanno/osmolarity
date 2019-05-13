@@ -22,14 +22,14 @@ function CreateProblem ($name, $imgsrc, $problemtext, $problemanswer, $problemch
 
 //Begin section 1
 $ProblemName = "1.  Chemistry Review";
-$ImgSrc = "./images/Chemicals_in_flasks.png";
+$ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>Let’s start with a very quick and very brief chemistry review.  If you find yourself having trouble here, please seek additional help on these topics.</p> <p>Amounts of solutes are usually measured in moles.  The number of moles is a function the amount of the substance (grams) and of its molecular weight (grams/mole).</p> <p>Sodium has a molecular weight of 23 g/mol.  Chloride has a molecular weight of 35.5 g/mol.  How much sodium chloride (NaCl) do you need to have 16 moles?</p> A.  368 g<br />
 B.  0.274 g<br /> C.  936 g<br /> <p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
 $ProblemAnswer = 'C';
 $ProblemChoices = 'ABC';
 $AttmeptOne = "<b>Nope.  You need to add the molecular weights for Na and Cl, then multiply by the number of moles.</b>";
-$AttmeptOneImgSrc = "./images/Chemicals_in_flasks.png";
-$ExplanationImgSrc = "./images/Chemicals_in_flasks.png";
+$AttmeptOneImgSrc = "./images/periodic_table.png";
+$ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>Let’s see how to calculate it.</p>
 
 <p>You first need to calculate the formula weight for the NaCl.  This is like the molecular weight but its for the compound, not just an element.  In order to do this, you add the molecular weights of the component elements:</p>
@@ -45,7 +45,7 @@ $NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer,
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = "1.  Chemistry Review";
-$ImgSrc = "./images/Chemicals_in_flasks.png";
+$ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>Concentration is the amount of a substance in each unit volume of solution.  If I have 2 moles of something in 1 liter of solution, the concentration is 2 moles/liter (M).</p>
 <p>I’ve got 936 g of NaCl which is 16 moles.  How much water do I add to this to obtain a concentration of 160 millimoles/liter (mM)?</p>
 <p>Remember.  The molecular weight of Na is 23 g/mol and Cl is 35.5 g/mol</p>
@@ -56,8 +56,8 @@ C.  1000 liters</br>
 $ProblemAnswer = 'B';
 $ProblemChoices = 'ABC';
 $AttmeptOne = "<b>Hmmm... you are an order of magnitude off.</b>";
-$AttmeptOneImgSrc = "./images/Chemicals_in_flasks.png";
-$ExplanationImgSrc = "./images/Chemicals_in_flasks.png";
+$AttmeptOneImgSrc = "./images/periodic_table.png";
+$ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>Let’s calculate the answer.</p>
 
 <p>We have 16 moles of NaCl.  We need 160 mmoles/liter.</p>
@@ -73,7 +73,7 @@ $NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer,
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = "1.  Chemistry Review";
-$ImgSrc = "./images/Chemicals_in_flasks.png";
+$ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>One more and we’ll move on.</p>
 <p>The typical human body has 5 liters of blood with a concentration of 140 mM NaCl.  How many grams of Na are there in the blood?</p>
 <p>(Hint:  Molecular weight of Na is 23 g/mol and of Cl is 35.5 g/mol)</p>
@@ -84,8 +84,8 @@ C.  41000</br>
 $ProblemAnswer = 'A';
 $ProblemChoices = 'ABC';
 $AttmeptOne = "<b>No, I only want the number of grams of Na.</b>";
-$AttmeptOneImgSrc = "./images/Chemicals_in_flasks.png";
-$ExplanationImgSrc = "./images/Chemicals_in_flasks.png";
+$AttmeptOneImgSrc = "./images/periodic_table.png";
+$ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>We have 140 millimoles/liter of NaCl.  This means we have 140 mM Na and 140 mM Cl.</p>
 
 <p>140 millimoles/liter Na = 0.140 moles/liter Na</p>

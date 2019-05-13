@@ -8,10 +8,7 @@
 */
 
 $(document).ready(function(){
-    var subproblemid;
-    var shownewsectionalert = true;
-    var shownextproblemalert = true;
-
+    
     $("#feedback").html("<p>This is a very simple wizard-type program with which most of you are probably familiar.  Use the buttons on the upper right hand corner of the screen to navigate through it.</p> <p>The purpose is to help you with the concept of diffusion of water and cell volume regulation.  Students have traditionally struggled with this.  Hopefully you will be more comfortable with the concepts involved by the time you finish this tutorial.</p> <p>Please select a section from the list on the right.  It is recommended that you start with the \"Chemistry Review\"</p> <p>Please note that there are frequently multiple problems in each section.  Use the \"Next\" button in the upper right hand corner to move to the next problem in each section</p>");
     function setImageVisible(id, imgsrc, visible) {	
 	var img = document.getElementById(id);
@@ -19,7 +16,7 @@ $(document).ready(function(){
 	img.style.visibility = (visible ? 'visible' : 'hidden');
     }
 
-    function LoadProblem(problemid) {
+    function LoadProblem(problemid, subproblemid) {
 	$.post('./includes/functions.php?fn=LoadProblem',{ProblemID: problemid, SubproblemID: subproblemid}).done(function(data){
 	    var results = JSON.parse(data);
 	    var Attempts = 0;
@@ -51,12 +48,18 @@ $(document).ready(function(){
     
     function EvaluateAnswer(problemid, problemresponse, attempts) {
 	$.post('./includes/functions.php?fn=CheckAnswers',{ProblemID: problemid, SubproblemID: subproblemid, ProblemResponse: problemresponse, Attempts: attempts}).done(function(data){
-	    $("#problemid").val(problemid);
+		$("#problemid").val(problemid);
+		$('#subproblemid').val(subproblemid);
 	    var results = JSON.parse(data);
 	    attempts = attempts + 1;
 	    var Attempts = attempts.toString(10);
 	    var Feedback = $("#feedback").html();
-	    var SectionCount = parseInt(results['sectioncount'],10);
+		var SectionCount = parseInt(results['sectioncount'],10);
+		var shownextproblemalert = $('#shownextproblemalert').val();
+		shownextproblemalert = ConvertToBoolean(shownextproblemalert);
+		var shownewsectionalert = $('#shownewsectionalert').val();
+		shownewsectionalert = ConvertToBoolean(shownewsectionalert);
+
 	    $("#checkanswers").attr("submitcount", Attempts);
 	    
 	    if (results['evaluation'] == 'incorrect'){
@@ -68,6 +71,7 @@ $(document).ready(function(){
 		    setImageVisible('problemimage',results['problemexplanationimgsrc'],'visible');
 		    if (subproblemid < results['count'] - 1) {
 			if (shownextproblemalert) {
+				console.log(shownextproblemalert);
 			    ShowNextProblemAlert("Sorry, that's incorrect.")
 			}
 			Feedback = SetInterfaceForNextProblem(Feedback);
@@ -98,9 +102,18 @@ $(document).ready(function(){
 	});
     }
 
-        function ShowNextProblemAlert(introductoryremark) {
-	alert(introductoryremark + "  Please read the explanation and be sure to click \"Next\" at the upper right hand corner of the page to load the next problem in this section.");
-	shownextproblemalert = false;
+	function ConvertToBoolean (showalert) {
+		if (showalert == 'true') {
+			showalert = true;
+		} else if (showalert == 'false') {
+			showalert = false;
+		}
+		return showalert;
+	}
+    function ShowNextProblemAlert(introductoryremark) {
+		alert(introductoryremark + "  Please read the explanation and be sure to click \"Next\" at the upper right hand corner of the page to load the next problem in this section.");
+		$('#shownextproblemalert').val(false);
+		//shownextproblemalert = false;
     }
 
     function SetInterfaceForNextProblem(feedback) {
@@ -111,8 +124,9 @@ $(document).ready(function(){
     }
 
     function ShowNewSectionAlert(introductoryremark) {
-	alert(introductoryremark + "  Please read the explanation and choose another section on the left.");
-	shownewsectionalert = false;
+		alert(introductoryremark + "  Please read the explanation and choose another section on the left.");
+		//shownewsectionalert = false;
+		$('#shownewsectionalert').val(false);
     }
 
     function SetInterfaceForNewSection(feedback, problemid, sectioncount) {
@@ -136,14 +150,17 @@ $(document).ready(function(){
 	$("button.problemselection").attr('activeproblem',0);
 	$(this).attr('activeproblem',1);
 	subproblemid = 0;
-	LoadProblem(problemid);
+	$('#subproblemid').val(0);
+	LoadProblem(problemid, subproblemid);
     });
 
     $(document).on('click',"#nextproblem",function(){
 	var ProblemID = $("#problemid").val();
 	problemid = parseInt(ProblemID,10);
+	var SubproblemID = $('#subproblemid').val();
+	subproblemid = parseInt(SubproblemID,10);
 	subproblemid = subproblemid + 1;
-	LoadProblem(problemid);
+	LoadProblem(problemid, subproblemid);
     });
     
     
