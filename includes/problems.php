@@ -6,9 +6,16 @@ $uparrow = "&uarr;";
 $downarrow = "&darr;";
 $rightarrow = "&rarr;";
 
-function CreateProblem ($name, $imgsrc, $problemtext, $problemanswer, $problemchoices, $attemptonefeedbackimgsrc, $attemptonefeedback, $problemexplanationimgsrc, $problemexplanation) {
+//This is also defined in functions.js.  If you change it here you have to change it there.
+abstract class ProblemType {
+	const multiplechoice = 0;
+	const calculation = 1;
+}
+
+function CreateMultipleChoice ($name, $problemtype, $imgsrc, $problemtext, $problemanswer, $problemchoices, $attemptonefeedbackimgsrc, $attemptonefeedback, $problemexplanationimgsrc, $problemexplanation) {
 	$problem = array();
 	$problem['name'] = $name;
+	$problem['problemtype'] = $problemtype;
 	$problem['imgsrc'] = $imgsrc;
 	$problem['problemtext'] = $problemtext;
 	$problem['problemanswer'] = $problemanswer;
@@ -20,13 +27,27 @@ function CreateProblem ($name, $imgsrc, $problemtext, $problemanswer, $problemch
 	return $problem;
 }
 
+function CreateCalculation ($name, $problemtype, $imgsrc, $problemtext, $problemanswer, $problemtolerance, $attemptonefeedbackimgsrc, $attemptonefeedback, $problemexplanationimgsrc, $problemexplanation) {
+	$problem = array();
+	$problem['name'] = $name;
+	$problem['problemtype'] = $problemtype;
+	$problem['imgsrc'] = $imgsrc;
+	$problem['problemtext'] = $problemtext;
+	$problem['problemanswer'] = $problemanswer;
+	$problem['problemtolerance'] = $problemtolerance;
+	$problem['attemptonefeedback'] = $attemptonefeedback;
+	$problem['attemptonefeedbackimgsrc'] = $attemptonefeedbackimgsrc;
+	$problem['problemexplanation'] = $problemexplanation;
+	$problem['problemexplanationimgsrc'] = $problemexplanationimgsrc;
+	return $problem;
+}
 //Begin section 1
 $ProblemName = "1.  Chemistry Review";
+$ProblemType = ProblemType::calculation;
 $ImgSrc = "./images/periodic_table.png";
-$ProblemText = '<p>Let’s start with a very quick and very brief chemistry review.  If you find yourself having trouble here, please seek additional help on these topics.</p> <p>Amounts of solutes are usually measured in moles.  The number of moles is a function the amount of the substance (grams) and of its molecular weight (grams/mole).</p> <p>Sodium has a molecular weight of 23 g/mol.  Chloride has a molecular weight of 35.5 g/mol.  How much sodium chloride (NaCl) do you need to have 16 moles?</p> A.  368 g<br />
-B.  0.274 g<br /> C.  936 g<br /> <p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
-$ProblemAnswer = 'C';
-$ProblemChoices = 'ABC';
+$ProblemText = '<p>Let’s start with a very quick and very brief chemistry review.  If you find yourself having trouble here, please seek additional help on these topics.</p> <p>Amounts of solutes are usually measured in moles.  The number of moles is a function the amount of the substance (grams) and of its molecular weight (grams/mole).</p> <p>Sodium has a molecular weight of 23 g/mol.  Chloride has a molecular weight of 35.5 g/mol.  How much sodium chloride (NaCl) do you need to have 16 moles?</p> <p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
+$ProblemAnswer = '936';
+$ProblemTolerance = '65';
 $AttmeptOne = "<b>Nope.  You need to add the molecular weights for Na and Cl, then multiply by the number of moles.</b>";
 $AttmeptOneImgSrc = "./images/periodic_table.png";
 $ExplanationImgSrc = "./images/periodic_table.png";
@@ -41,21 +62,20 @@ NaCl= 23 + 35.5 = 58.5 g/mol</br>
 
 58.5 g/mol (16 mol) = 936 g";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateCalculation($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemTolerance, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = "1.  Chemistry Review";
+$ProblemType = ProblemType::calculation;
 $ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>Concentration is the amount of a substance in each unit volume of solution.  If I have 2 moles of something in 1 liter of solution, the concentration is 2 moles/liter (M).</p>
 <p>I’ve got 936 g of NaCl which is 16 moles.  How much water do I add to this to obtain a concentration of 160 millimoles/liter (mM)?</p>
-<p>Remember.  The molecular weight of Na is 23 g/mol and Cl is 35.5 g/mol</p>
-A.  10 liters</br>
-B.  100 liters</br>
-C.  1000 liters</br>
-<p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
-$ProblemAnswer = 'B';
-$ProblemChoices = 'ABC';
-$AttmeptOne = "<b>Hmmm... you are an order of magnitude off.</b>";
+<p>Remember that the molecular weight of Na is 23 g/mol and Cl is 35.5 g/mol</p>
+
+<p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
+$ProblemAnswer = '100';
+$ProblemTolerance = '50';
+$AttmeptOne = "<b>Hmmm... 160 mmoles/liter = 16000 millimoles divided by the unknown quantity of liters.</b>";
 $AttmeptOneImgSrc = "./images/periodic_table.png";
 $ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>Let’s calculate the answer.</p>
@@ -69,10 +89,11 @@ $Explanation = "<p>Let’s calculate the answer.</p>
 160 millimoles/liter = 16000 millimoles/X</br>
 X=16000 millimoles/(160 millimoles/liter)=100 liters</br>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateCalculation($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemTolerance, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = "1.  Chemistry Review";
+$ProblemType = ProblemType::calculation;
 $ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>One more and we’ll move on.</p>
 <p>The typical human body has 5 liters of blood with a concentration of 140 mM NaCl.  How many grams of Na are there in the blood?</p>
@@ -81,9 +102,9 @@ A.  16.1 grams</br>
 B. 41 grans</br>
 C.  41000</br>
 <p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
-$ProblemAnswer = 'A';
-$ProblemChoices = 'ABC';
-$AttmeptOne = "<b>No, I only want the number of grams of Na.</b>";
+$ProblemAnswer = '16.1';
+$ProblemTolerance = '4';
+$AttmeptOne = "<b>No. Remember that I only want the number of grams of Na.</b>";
 $AttmeptOneImgSrc = "./images/periodic_table.png";
 $ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>We have 140 millimoles/liter of NaCl.  This means we have 140 mM Na and 140 mM Cl.</p>
@@ -97,7 +118,7 @@ $Explanation = "<p>We have 140 millimoles/liter of NaCl.  This means we have 140
 
 <p>OK, enough review.</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateCalculation($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemTolerance, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 array_push($problemlist,$subproblemlist);
@@ -107,6 +128,7 @@ $subproblemlist = array();
 //Begin Section 2
 
 $ProblemName = '2.  Osmolarity';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/osmolarity_generic.png";
 $ProblemText = '<p><b>Osmolarity</b> is a measure of the osmoles of solute per liter solution (<em>osmolality</em> is per kg solution).  An osmole is one mole of particles.  A solution with higher osmolarity relative to a reference solution is said to be <em>hyper-osmotic</em>.  A solution with lower osmolarity relative to a reference solution is said to be <em>hypo-osmotic</em>.  A solution with the same osmolarity as a reference solution is said to be <em>iso-osmotic</em>.</p>
 <p>Which of these solutions is hypo-osmotic relative to the other listed?</p>
@@ -148,7 +170,7 @@ $Explanation = "<p>The osmolarity of the albumin is 240 mOsm/L because there are
 <td><b><i>240</i></b></td>
 </tr>
 </table>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 array_push($problemlist,$subproblemlist);
@@ -157,6 +179,7 @@ $subproblemlist = array();
 // End of Section 2
 //Begin Section 3
 $ProblemName = '3.  Tonicity';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/osmolarity1.png";
 $ProblemText = '<p>OK, now it gets slightly more complicated.</p>
 <p>You examine a single cell.  The cell has 40 mM protein G in it (protein generally does not cross the cell membrane).  You also have a huge beaker of water which has 20 mM of protein G in it.  You drop the cell into the water.  The cell will:</p>
@@ -189,7 +212,7 @@ to low concentration (high osmolarity, inside our cell) until the concentration 
 
 <p>Note that this is a hypotonic solution, that is it made the cell increase in volume and swell.  Had the solution decreased the cell’s volume, it would have been hypertonic.  Finally, if the solution had not changed the cell volume at all, it would have been isotonic.</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 array_push($problemlist,$subproblemlist);
 $subproblemlist = array();
@@ -199,6 +222,7 @@ $subproblemlist = array();
 
 //begin section 4
 $ProblemName = '4.  Membrane Permeant Substances';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/membrane_permeant1.png";
 $ProblemText = '<p>Let\'s start over with the same conditions but let\'s add 140 mM substance H to the solution which we put the cell in.  Substance H can cross the cell membrane.  The situation is as illustrated above.</p>
 <p>At this point, no substances have moved.  Relative to the inside of the cell, the solution outside is:</p>
@@ -255,10 +279,11 @@ $Explanation = "<p>The mOsm/L on the outside exceeds the number of mOsm/L inside
 </tr>
 </table>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '4.  Membrane Permeant Substances';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/membrane_permeant1.png";
 $ProblemText = '<p>Now let\'s crank it up another notch.  The solution outside is:</p>
   
@@ -274,7 +299,7 @@ $ExplanationImgSrc = "./images/membrane_permeant1a.png";
 $Explanation = "<p>Because substance H can cross the membrane, its concentration inside the cell eventually becomes 140 mM.  However, because protein G cannot cross the membrane, water still goes into the cell, thus diluting the contents until the osmolarity equalizes on both sides of the membrane (at 160 mOsm/L).  The cell volume therefore still doubles.  This is what we mean when we say that the tonicity of a solution depends primarily upon the concentration of substances which are not able to cross the membrane.  Enough water must enter or leave the cell to dilute or concentrate these substances until the osmolarity on both sides of the membrane is the same.</p>
 <p>Note well that this solution was hyper-osmotic relative to the inside of the cell.  Yet because it causes the cell to swell, it is hypotonic.  You should be able to make the distinction.  The first is a physical property of the solution,  usually described before addition to the cells or infusion into the body.  The second is a biological characteristic which describes the cellular response upon addition or infusion.</p>
 <p>Often as physicians you will be performing volume expansion with isotonic solutions because you usually do not want the cells to swell to any great extent.</p>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 array_push($problemlist,$subproblemlist);
@@ -285,6 +310,7 @@ $subproblemlist = array();
 //Begin section 5
 
 $ProblemName = '5.  Case of Dehydration';
+$ProblemType = ProblemType::calculation;
 $ImgSrc = "./images/dehydration.png";
 $ProblemText = '<p>Now let\'s take a more practical example.  Note the this is only <em>slightly</em> more practical.  Don\'t take the numbers too seriously in that the actual changes aren\'t quite this extreme.</p>
 
@@ -293,36 +319,29 @@ A patient comes into the ER, apparently suffering from dehydration.  Assume that
 </p>
 
 <p> What is the osmolarity inside the red blood cells?
-</p>
-  
-A.  300 mOsm/L<br />
-B.  320 mOsm/L<br />
-C.  600 mOsm/L<br />
-<p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
-$ProblemAnswer = 'B';
-$ProblemChoices = 'ABC';
+
+<p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
+$ProblemAnswer = '320';
+$ProblemTolerance = '0';
 $AttmeptOne = "<b>Nope.  Remember that cells can\'t stand to have water gradients across their membranes.  Try again.</b>";
 $AttmeptOneImgSrc = "./images/dehydration.png";
 $ExplanationImgSrc = "./images/dehydration.png";
 $Explanation = "<p>Remember that the osmolarity inside and outside the cells must be the same.  Otherwise, the cell volume would be changing.  
 Obviously this is not the case as most cells are at a constant volume unless you are in the act of perturbing the system.</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateCalculation($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemTolerance, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '5.  Case of Dehydration';
+$ProblemType = ProblemType::calculation;
 $ImgSrc = "./images/dehydration.png";
 $ProblemText = '<p>The doctor administers 1 L of sterile water (Don\'t actually do this, folks.  It would be bad for your patient and your practice.)
 Assume the patient\'s initial blood volume was 5 L and 2 L of it was red blood cells and the rest was plasma.</p>
 <p>If the initial osmolarity was 320 mOsm/L, what is the new plasma osmolarity?
-</p>
-  
-A.  213 mOsm/L<br />
-B.  240 mOsm/L<br />
-C.  267 mOsm/L<br />
-<p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
-$ProblemAnswer = 'C';
-$ProblemChoices = 'ABC';
+
+<p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
+$ProblemAnswer = '267';
+$ProblemTolerance = '40';
 $AttmeptOne = "<b>No.  Remember that water equilibrates very quickly across the membrane of the red blood cells.  Try again.</b>";
 $AttmeptOneImgSrc = "./images/dehydration.png";
 $ExplanationImgSrc = "./images/dehydration.png";
@@ -333,10 +352,11 @@ $Explanation = "<p>Lets calculate it.  The initial blood volume (cells and plasm
 1600 mOsm/6 L = 266.7 mOsm/L</br>
 <p>Yes, I know.  We only added the water to the plasma.  But the water very quickly equilibrates across the membrane diluting the cellular contents until the osmolarity is the same on both sides.  So you must account for the particles in both the plasma and the red blood cells.</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateCalculation($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemTolerance, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '5.  Case of Dehydration';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/dehydration.png";
 $ProblemText = '<p>Assuming that the total RBC volume was 2 L prior to water administration, what is the new RBC volume?  Remember that the osmolarity dropped from 
 320 to 267 mOsm/L.
@@ -358,20 +378,19 @@ $Explanation = "<p>First, its obvious that the cells will swell in order for the
 <p>The final osmolarity inside the RBCs is 266.7 mOsm/L.  This change in osmolarity was cause by movement of water across the membrane, thus diluting the cellular contents.  Therefore the new volume must be:</p>
 <p>640 mOsm/(266.7 mOsm/L)=2.4 L</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '5.  Case of Dehydration';
+$ProblemType = ProblemType::calculation;
 $ImgSrc = "./images/dehydration.png";
 $ProblemText = '<p>The doctor quickly realizes his mistake.  He decides that in order to correct it, he should infuse 1 L of 50o mM sucrose.  Sucrose cannot cross cell membranes.
 </p>
 <p>Assuming that the blood volume is 6 L and the plasma osmolarity is 266.7 mOsm/L, what will the plasma osmolarity be after infusion of sucrose?</p>  
-A.  266.7 mOsm/L<br />
-B.  300 mOsm/L<br />
-C.  320 mOsm/L<br />
-<p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
-$ProblemAnswer = 'B';
-$ProblemChoices = 'ABC';
+
+<p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
+$ProblemAnswer = '300';
+$ProblemTolerance = '19';
 $AttmeptOne = "<b>Nope.  Figure the total mOsm in the blood and divide by the new blood volume.</b>";
 $AttmeptOneImgSrc = "./images/dehydration.png";
 $ExplanationImgSrc = "./images/dehydration.png";
@@ -386,7 +405,7 @@ Initial mOsm in the blood:</br>
 2100 mOsm/7 L = <b><i>300 mOsm/L</i></b></br>
 <p>So we're back to normal</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateCalculation($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemTolerance, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 array_push($problemlist,$subproblemlist);
@@ -395,6 +414,7 @@ $subproblemlist = array();
 
 //begin section 6
 $ProblemName = '6.  Osmolarity and the Kidney';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/kidney1.png";
 $ProblemText = '<p>Osmotic movement of water is very important physiologically and pathophysiologically.  For instance, it is particularly important for correct formulation of urine in the kidney.  The osmotic gradient between the fluid in the lumen of the renal nephron and the fluid in the renal medulla drives water movement across the epithelial wall of the nephron which separates them.
 </p>
@@ -410,10 +430,11 @@ $AttmeptOne = "<b>Sorry.  I'm sure you'll get it right this time.</b>";
 $AttmeptOneImgSrc = "./images/kidney1.png";
 $ExplanationImgSrc = "./images/kidney1a.png";
 $Explanation = "<p>In order to concentrate the urine (i.e. decrease the urine volume), water must move from the nephron into the renal medulla.   It therefore flows down its concentration gradient from low osmolarity to high osmolarity.</p>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '6.  Osmolarity and the Kidney';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/kidney2.png";
 $ProblemText = '<p>Sickle cell anemia is a disease of the red blood cells which you will be learning a great deal more about from the molecular biologists here at Rush.  Among the symptoms of the disease is an inability to concentrate urine.
 </p>
@@ -432,7 +453,7 @@ $Explanation = "<p>The urine is less concentrated in the sickle cell patient.  T
 
 <p>As it turns out, the sickle cell patient can’t concentrate his/her urine because they cannot maintain a high enough osmolarity in the renal medulla.  This limits the movement of water out of the nephron because the water concentration is too high in the medulla.  The reasons for this inability to generate an osmotic gradient are not well understood.  I will be glad to discuss it with you but the explanation will likely be more meaningful after you have had cardiovascular and renal physiology.</p>
 <p>Please note that as far as the physiology is concerned I do <b><i>not</b></i> expect you to know about sickle cell anemia for this class.  I <b><i>do</i></b> expect you to be able to predict the consequences of an increased or decreased osmolarity in terms of water movement in a system.</p>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 array_push($problemlist,$subproblemlist);
@@ -441,6 +462,7 @@ $subproblemlist = array();
 
 //Begin section 7
 $ProblemName = '7.  Osmolarity in the Capillaries';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/capillary1.png";
 $ProblemText = '<p>A "typical" capillary is depicted below with the hydrostatic pressure on each end.
 </p>
@@ -457,10 +479,11 @@ $AttmeptOne = "<b>Nope.  Fluid flows from high pressure to low pressure.  Try ag
 $AttmeptOneImgSrc = "./images/capillary1.png";
 $ExplanationImgSrc = "./images/capillary1a.png";
 $Explanation = "<p>Fluid always flows from high pressure to low pressure.</p>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '7.  Osmolarity in the Capillaries';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/capillary2.png";
 $ProblemText = '<p>
 Now, what if I also told you that the capillary wall is permeable to water and that the tissue hydrostatic pressure outside the capillary in the interstitium is lower than the hydrostatic pressure in the lumen of the capillary?
@@ -477,10 +500,11 @@ $AttmeptOneImgSrc = "./images/capillary2.png";
 $ExplanationImgSrc = "./images/capillary2.png";
 $Explanation = "<p>The flow of water out of the capillary is highest at the arterial end where the hydrostatic pressure is greatest.  The pressure difference across the wall here is 25-5 or 20 mmHg.  The pressure difference across the wall on the venous side is 15-5 or 10 mmHg.  Thus there is less driving force for water movement at the venous end.  This process is known as filtration and you will learn more about it in cardiovascular physiology.</p>";
 
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = "7.  Osmolarity in the Capillaries";
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/capillary3.png";
 $ProblemText = '<p>
 Opposing the process of filtration in a capillary is the process of reabsorption. Water is reabsorbed when it moves from the tissues back into the capillary lumen (purple arrows).  The process is driven by a difference in the osmolarity between the tissues (i.e. the interstitial space) and the capillary lumen.
@@ -498,10 +522,11 @@ $AttmeptOne = "<b>Sorry.  Only one choice left.  Try again.</b>";
 $AttmeptOneImgSrc = "./images/capillary3.png";
 $ExplanationImgSrc = "./images/capillary3.png";
 $Explanation = "<p>The osmolarity must be higher in the capillary lumen in order for water to move down its concentration gradient.  The difference in osmolarity across the capillary wall is, in fact, very small (only about 0.5%).  It is due to the presence of proteins such as albumin in the blood which cannot cross the capillary wall.  This difference is small but extremely important in capillary fluid dynamics.  The osmotic pressure contributed by non-diffusable protein molecules is known as the oncotic pressure.  That is, the oncotic pressure is higher in the capillary lumen.  We will learn more about this in the cardiovascular section.</p>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 $ProblemName = '7.  Osmolarity in the Capillaries';
+$ProblemType = ProblemType::multiplechoice;
 $ImgSrc = "./images/capillary3.png";
 $ProblemText = '<p>
 Given the above, you have a patient who is malnourished and is therefore not producing proteins such as albumin at a rate necessary to maintain its normal concentration in the blood.  You would expect:
@@ -517,7 +542,7 @@ $AttmeptOne = "<b>That's incorrect.  Remember that water is usually flowing down
 $AttmeptOneImgSrc = "./images/capillary3.png";
 $ExplanationImgSrc = "./images/capillary3.png";
 $Explanation = "<p>You would expect tissue swelling.  Decreased albumin in the capillary lumen leads to decreased osmolarity.  That means increased water concentration.  Since in the process of reabsorption the water flows from the interstitium to the capillary down its concentration gradient, increasing water concentration in the capillary lumen will impede this process.  Less reabsorption means that fluid accumulates in the tissues.  This is known as edema.  It is an extremely common symptom of a variety of diseases.  It appears when the fluid balance across the capillary wall which is illustrated below is disrupted in some way.  You will learn much more about edema in the cardiovascular lectures.</p>";
-$NewProblem = CreateProblem($ProblemName, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
+$NewProblem = CreateMultipleChoice($ProblemName, $ProblemType, $ImgSrc, $ProblemText, $ProblemAnswer, $ProblemChoices, $AttmeptOneImgSrc, $AttmeptOne, $ExplanationImgSrc, $Explanation);
 array_push($subproblemlist, $NewProblem);
 
 array_push($problemlist,$subproblemlist);

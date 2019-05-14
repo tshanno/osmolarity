@@ -17,15 +17,16 @@ header("Expires: 0"); // Proxies.
 	<div id="wrapper">
 		<div id="header">
 			<p class='alignleft'>
-			<span class='label'>Osmolarity and Cell Volume</span>
+			<span class='label' id='programname'>Osmolarity and Cell Volume</span>
 			<input type='submit' class='openpopup' id='opendirections' value='Directions' divid='directions' />
 			<input type='submit' class='openpopup' id='openabout' value='About' divid='about' />
 			</p>
 			<p class='alignright'>
-			<input type="radio" id="A" name="choice" value="A"><span class='label' id='label_A' value='enabled'>A</span> 
-  			<input type="radio" id="B" name="choice" value="B"><span class='label' id='label_B' value='enabled'>B</span> 
-			<input type="radio" id="C" name="choice" value="C"><span class='label' id='label_C' value='enabled'>C</span>
-			<input type='submit' id='checkanswers' value='Evaluate' submitcount='0' />
+			<input type="hidden" id="A" name="choice" value="A"><span class='label' id='label_A' value='enabled' hidden=true>A</span> 
+  			<input type="hidden" id="B" name="choice" value="B"><span class='label' id='label_B' value='enabled' hidden=true>B</span> 
+			<input type="hidden" id="C" name="choice" value="C"><span class='label' id='label_C' value='enabled' hidden=true>C</span>
+			<span class='label' id='label_numeral' hidden=true >Answer:</span><input type="hidden" id="numberanswer" name="numeral" value=0 step="any">
+			<input type='submit' id='checkanswers' value='Evaluate' submitcount='0' disabled=true/>
 			<input type='submit' id='nextproblem' value='Next' disabled=true /> 
 			</p>
 			<div style="clear: both;"></div>

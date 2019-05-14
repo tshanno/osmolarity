@@ -60,6 +60,11 @@ button.problemselection {
 
 }
 
+#programname {
+	font-size: 24px;
+	font-weight: bold;
+
+}
 #problemstem {
 	text-align: center;
 }
@@ -79,6 +84,9 @@ img {
 	overflow-y: auto;
 }
 
+#numberanswer {
+	width: 5em;
+}
 table{
 	border-spacing: 0;
 	margin-left: auto;
@@ -132,12 +140,12 @@ div.hr {
 }
 
 .label {
-	font-size: 24px;
+	font-size: 18px;
 	font-weight:bold;
 }
 
 span.disabled {
-	font-size: 24px;
+	font-size: 18px;
 	color: #a0a0a0
 }
 

@@ -26,6 +26,7 @@ function LoadProblem($problemid, $subproblemid) {
 	//$returndata = [];
 	$problem = $problemlist[$problemid][$subproblemid];
 	$returndata['name'] = $problem['name'];
+	$returndata['problemtype'] = $problem['problemtype'];
 	$returndata['imgsrc'] = $problem['imgsrc'];
 	$returndata['problemtext'] = $problem['problemtext'];
 	$returndata['problemanswer'] = $problem['problemanswer'];
@@ -47,11 +48,23 @@ function CheckAnswers($problemid, $subproblemid, $problemresponse, $attempts) {
 	$returndata['problemexplanation'] = $problem['problemexplanation'];
 	$returndata['attemptonefeedbackimgsrc'] = $problem['attemptonefeedbackimgsrc'];
 	$returndata['problemexplanationimgsrc'] = $problem['problemexplanationimgsrc'];
-	if ($problem['problemanswer'] === $problemresponse) {
-		$returndata['evaluation'] = 'correct';
-	} else {
-		$returndata['evaluation'] = 'incorrect';
-	}
+	$returndata['problemtype'] = $problem['problemtype'];
+	//$problemresponse = (float)$problemresponse;
+	if ($problem['problemtype'] === ProblemType::calculation) {
+		$upperlimit = (float)$returndata['problemanswer'] + (float)$problem['problemtolerance'];
+		$lowerlimit = (float)$returndata['problemanswer'] - (float)$problem['problemtolerance'];
+		if (($upperlimit >= (float)$problemresponse) && ($lowerlimit <= (float)$problemresponse)) {
+			$returndata['evaluation'] = 'correct';
+		} else {
+			$returndata['evaluation'] = 'incorrect';
+		}
+	} else if ($problem['problemtype'] === ProblemType::multiplechoice) {
+		if ($problem['problemanswer'] === $problemresponse) {
+			$returndata['evaluation'] = 'correct';
+		} else {
+			$returndata['evaluation'] = 'incorrect';
+		}
+	} 
 	echo json_encode($returndata);
 }
 
