@@ -48,7 +48,9 @@ $ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>Let’s start with a very quick and very brief chemistry review.  If you find yourself having trouble here, please seek additional help on these topics.</p> <p>Amounts of solutes are usually measured in moles.  The number of moles is a function the amount of the substance (grams) and of its molecular weight (grams/mole).</p> <p>Sodium has a molecular weight of 23 g/mol.  Chloride has a molecular weight of 35.5 g/mol.  How much sodium chloride (NaCl) do you need to have 16 moles?</p> <p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
 $ProblemAnswer = '936';
 $ProblemTolerance = '65';
-$AttmeptOne = "<b>Nope.  You need to add the molecular weights for Na and Cl, then multiply by the number of moles.</b>";
+$AttmeptOne = "<p><b>Nope.</b>  You need to add the molecular weights for Na and Cl, then multiply by the number of moles.</p>
+<p>For instance, say I want 2 moles of CaCl<sub>2</sub>.  The molecular weight of Ca is 40 g/mol.  The molecular weigh tof Cl is 35.5 g/mol.  So 2 moles offensive coordinator CaCl<sub>2</sub> is:</p>
+<p><center>(40 + (2 X 35.5)) X 2 = 222 grams</p></center>";
 $AttmeptOneImgSrc = "./images/periodic_table.png";
 $ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>Let’s see how to calculate it.</p>
@@ -75,7 +77,9 @@ $ProblemText = '<p>Concentration is the amount of a substance in each unit volum
 <p><b>Enter the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
 $ProblemAnswer = '100';
 $ProblemTolerance = '50';
-$AttmeptOne = "<b>Hmmm... 160 mmoles/liter = 16000 millimoles divided by the unknown quantity of liters.</b>";
+$AttmeptOne = "<p><b>Hmmm...</b> 160 mmoles/liter = 16 moles (i.e. 16000 millimoles) divided by the unknown quantity of liters:</p>
+<p><center> 160 = 16000/x</center><p>
+<p>...and you solve for x.</p>";
 $AttmeptOneImgSrc = "./images/periodic_table.png";
 $ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>Let’s calculate the answer.</p>
@@ -98,13 +102,11 @@ $ImgSrc = "./images/periodic_table.png";
 $ProblemText = '<p>One more and we’ll move on.</p>
 <p>The typical human body has 5 liters of blood with a concentration of 140 mM NaCl.  How many grams of Na are there in the blood?</p>
 <p>(Hint:  Molecular weight of Na is 23 g/mol and of Cl is 35.5 g/mol)</p>
-A.  16.1 grams</br>
-B. 41 grans</br>
-C.  41000</br>
+
 <p><b>Click on the correct answer in the bar at the upper right hand corner of the page and Evaluate.</b></p>';
 $ProblemAnswer = '16.1';
 $ProblemTolerance = '4';
-$AttmeptOne = "<b>No. Remember that I only want the number of grams of Na.</b>";
+$AttmeptOne = "<b>No.</b> Remember that I only want the number of grams of Na.";
 $AttmeptOneImgSrc = "./images/periodic_table.png";
 $ExplanationImgSrc = "./images/periodic_table.png";
 $Explanation = "<p>We have 140 millimoles/liter of NaCl.  This means we have 140 mM Na and 140 mM Cl.</p>
